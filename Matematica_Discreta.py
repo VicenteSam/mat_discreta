@@ -1,6 +1,7 @@
 import math
+import sympy as sp
 
-# Função para construir e imprimir matriz eletrônica
+# Função geradora de matriz eletrônica
 def matriz_eletronica(qtdVar):
     M = [[0 for _ in range(qtdVar)] for _ in range(2**qtdVar)]
 
@@ -14,101 +15,50 @@ def matriz_eletronica(qtdVar):
     for linha in M:
         print(linha)
 
-# Função para construir e imprimir de combinação
-def matriz_combinacao(qtdVar):
-    M = [[0 for _ in range(qtdVar)] for _ in range(2**qtdVar)]
-
-    for i in range (2**qtdVar):
-        for j in range (qtdVar):
-            if math.floor(i/(2**j)) % 2 == 0:
-                M[i][j] = 0
+# Função geradora de matriz de combinação e suas respectivas combinações de variáveis
+def matriz_combinacao(variaveis):
+    n = len(variaveis)
+    linhas = 2 ** n
+    
+    for i in range(linhas):
+        linha_binaria = []
+        subconjunto = []
+        for j in range(n):
+            if math.floor(i / (2 ** j)) % 2 == 1:
+                linha_binaria.append(1)
+                subconjunto.append(variaveis[j])
             else:
-                M[i][j] = 1
+                linha_binaria.append(0)
+        
+        print(f"{linha_binaria} = {subconjunto}")
 
-    for linha in M:
-        print(linha)
-
-# Função n°1 - Somatório de potências 1^m+2^m+3^m+⋯+n^m
-def somatorio_potencia(m, n):
+# Função geradora da fórmula Bernoulli
+def bernoulli(m):
+    numeros_bernoulli = {0: 1, 1: -1/2, 2: 1/6, 4: -1/30, 6: 1/42, 8: -1/30}
     soma = 0
-    for valor in range (1, n+1):
-        soma += valor ** m
-    return soma
+    n = sp.symbols('n')
 
-# Função n°2 - Somatório de combinações a(m-j) = Σ (-1)^k*C(j,k)*(1-k+j)^m
-def somatorio_combinacao(m):
-    a = [0] * (m+1)
     for j in range (m+1):
-        for k in range (j+1):
-            a[j] += ((-1)**k)*formula_combinacao(j, k)*(1-k+j)**m
-    return a
-
-# Função n°3 - Somatório total Σ C(n, j+1)*a(m-j)
-def somatorio_total(j, n, a):
-    total = 0
-    componentes = []
-    for valor in range (j+1):
-        componente = formula_combinacao(n, valor+1) * a[valor]
-        total += componente
-        componentes.append(f"C({n},{valor+1})*{a[valor]}")
-    return total, componentes
-
-# Função auxiliar - Cálculo de combinações C(m,k) = m!/(k!(m-k)!)
-def formula_combinacao(m, k):
-    if m >= k and k >= 0:
-        fact_m, fact_k, fact_mk = 1, 1, 1
-        for i in range(1, m+1):
-            fact_m *= i
-        for j in range(1, k+1):
-            fact_k *= j
-        for l in range(1, (m-k)+1):
-            fact_mk *= l
-
-        comb = fact_m/(fact_k*(fact_mk))
-        return comb
-    return 0
-
-# Função de impressão - Imprime e prova as várias funções anteriores
-def demonstracao(m, n):
-    soma_potencias = somatorio_potencia(m, n)
-    a = somatorio_combinacao(m)
-    total, componentes = somatorio_total(m, n, a)
-
-    print("            Verificação:")
-    print(f"                     1^m + 2^m + 3^m + ⋯ + n^m = Σ C(n, j+1)*a(m-j)")
-    print(f"            onde,")
-    print(f"                     a(m-j) = Σ (-1)^k*C(j,k)*(1-k+j)^m")
-    print("            logo:")
+        soma += ((-1)**j)*sp.binomial(m+1, j)*numeros_bernoulli.get(j, 0)*(n**(m+1-j))
     
-    # Expressão de a(m-j)
-    a_expressao = ", ".join([f"a{m-j} = {a_val}" for j, a_val in enumerate(a)])
-    print(f"                     {a_expressao}")
+    return sp.pretty(sp.factor(sp.simplify(soma / (m+1), rational=True)))
 
-    # Soma total com componentes
-    componentes_str = " + ".join(componentes)
-    print(f"                     Σ = {componentes_str}")
-    print(f"                     Σ = {total}")
-    
-    # Soma de potências
-    potencias_str = " + ".join([f"{i}^{m}" for i in range(1, n + 1)])
-    valores_str = " + ".join([f"{i**m}" for i in range(1, n + 1)])
-    print(f"            em paralelo:")
-    print(f"                     {potencias_str} = {valores_str} = {soma_potencias}")
-
-    # Resultado final
-    print(f"            por fim:")
-    print(f"                     1^m + 2^m + 3^m + ⋯ + n^m = Σ C(n, j+1)*a(m-j)")
 
 if __name__ == '__main__':
-    # Teste Gráfico Eletrônico
+    # Teste Matriz da Eletrônica Digital
     # qtd_elementos = 4
     # print(matriz_eletronica(qtd_elementos))
 
+    expoente = 1
+    print(bernoulli(expoente))
+    expoente = 2
+    print(bernoulli(expoente))
+    expoente = 3
+    print(bernoulli(expoente))
+    expoente = 4
+    print(bernoulli(expoente))
+
     # Teste Gráfico Combinações
-    # qtd_elementos = 4
-    # print(matriz_combinacao(qtd_elementos))
-    
-    # Teste Indução
-    n = 10
-    m = 3
-    print(demonstracao(m, n))
+    # lista_variaveis = ["a0", "a1", "a2", "a3"]
+    # print(matriz_combinacao(lista_variaveis))
+
