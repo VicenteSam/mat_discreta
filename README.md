@@ -6,3 +6,5 @@ Avaliação de Matemática Discreta
 ![image](https://github.com/user-attachments/assets/212d0b2e-fd6e-498f-ade2-e7b23624de70)
 ![image](https://github.com/user-attachments/assets/502cd313-e8e2-4040-b966-7c6c57877738)
 
+# Torre de Hanoi
+[http://www.numerit.com/samples/hanoi/doc.htm](https://www.numerit.com/samples/hanoi/fig3.gif)
