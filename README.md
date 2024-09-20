@@ -7,4 +7,4 @@ Avaliação de Matemática Discreta
 ![image](https://github.com/user-attachments/assets/502cd313-e8e2-4040-b966-7c6c57877738)
 
 # Torre de Hanoi
-![Torre de Hanói](http://www.numerit.com/samples/hanoi/doc.htm)
+![Torre de Hanói](https://www.numerit.com/samples/hanoi/fig3.gif)
