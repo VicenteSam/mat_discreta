@@ -89,6 +89,12 @@ def grafico_torre(n):
 
 def main():
     n = int(input("Número de discos (máx. 5): "))
+    
+    # Limitar o número de discos a 5
+    if n > 5:
+        print("Número máximo de discos é 5. Usando 5 discos.")
+        n = 5
+    
     grafico_torre(n)
 
 if __name__ == "__main__":
